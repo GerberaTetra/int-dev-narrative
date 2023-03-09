@@ -1,11 +1,14 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 public class playerController : MonoBehaviour
 {
     public float speed;
     public bool getkey = false;
+    public bool getdoor = false;
     public GameObject key;
     public SpriteRenderer spRenderer;
+    public SpriteRenderer spRenderer2;
     public Sprite newSprite;
     public Sprite newSprite2;
     public Sprite newSprite3;
@@ -51,23 +54,28 @@ public class playerController : MonoBehaviour
         if ((collision.gameObject.tag == "door") && (getkey == true))
         {
             Destroy(GameObject.FindWithTag("door"));
+            getdoor = true;
         }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("text2"))
-        {
-            spRenderer.sprite = newSprite3;
-        }
 
+        if (other.CompareTag("end"))
+        {
+            SceneManager.LoadScene("endscene");
+        }
         if (other.CompareTag("key"))
         {
             getkey = true;
             Destroy(key);
         }
 
-        if (other.CompareTag("text1") && (getkey = true))
+        if (other.CompareTag("text2") && (getdoor == true))
+        {
+            spRenderer2.sprite = newSprite3;
+        }
+        if (other.CompareTag("text1") && (getkey == true))
         {
             spRenderer.sprite = newSprite2;
         }
@@ -76,10 +84,7 @@ public class playerController : MonoBehaviour
             spRenderer.sprite = newSprite;
         }
 
-       if (other.CompareTag("text2"))
-        {
-            spRenderer.sprite = newSprite3;
-        }
+       
     }
 
 }
